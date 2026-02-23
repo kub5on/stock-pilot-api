@@ -14,7 +14,7 @@ class Watchlist(Base, TimestampMixin):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
 
     user: Mapped["User"] = relationship("User", back_populates="watchlists")
-    watchlist_items: Mapped[list["WatchListItem"]] = relationship("WatchListItem", back_populates="watchlist")
+    watchlist_items: Mapped[list["WatchlistItem"]] = relationship("WatchListItem", back_populates="watchlist")
 
 class WatchlistItem(Base):
     __tablename__ = 'watchlist_items'
