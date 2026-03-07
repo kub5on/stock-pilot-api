@@ -15,13 +15,24 @@ password_hash = PasswordHash(
     )
 )
 
-ALGORITHM = "HS256"
 
 def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
     expire = datetime.now(timezone.utc) + expires_delta
     to_encode = {"exp": expire, "sub": str(subject)}
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def create_refresh_token(subject: str | Any, expires_delta: timedelta) -> str:
+    expire = datetime.now(timezone.utc) + expires_delta
+    to_encode = {"exp": expire, "sub": str(subject)}
+    refresh_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    return refresh_jwt
+
+
+def decode_token(token: str) -> dict:
+    decoded = jwt.decode(token, settings.secret_key, algorithm=settings.algorithm)
+    return decoded
 
 
 def verify_password(
